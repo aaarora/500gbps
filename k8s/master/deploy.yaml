@@ -56,9 +56,6 @@ spec:
             cpu: 19
             memory: 8Gi
         volumeMounts:
-        - mountPath: /home/tpc.py
-          name: tpc-script
-          subPath: tpc.py
         - mountPath: /etc/pki/CA/private/OSG-Test-CA.key
           name: ca
           subPath: OSG-Test-CA.pem
@@ -74,13 +71,6 @@ spec:
       volumes:
       - name: cache-vol
         emptyDir: {}
-      - name: tpc-script
-        configMap: 
-          name: tpc-script
-          items:
-          - key: tpc.py
-            path: tpc.py
-          defaultMode: 0777
       - name: ca
         secret:
           secretName: https-self-certs
