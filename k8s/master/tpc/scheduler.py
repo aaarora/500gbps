@@ -1,6 +1,6 @@
 import logging
 import asyncio
-import random
+
 from aiomultiprocess import Pool
 
 class TransferScheduler:

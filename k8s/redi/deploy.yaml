@@ -2,12 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    k8s-app: xrootd-redi-gc
-  name: xrootd-redi-gc
+    k8s-app: xrootd-redi-a
+  name: xrootd-redi-a
 spec:
   selector:
     matchLabels:
-      k8s-app: xrootd-redi-gc
+      k8s-app: xrootd-redi-a
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -17,7 +17,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        k8s-app: xrootd-redi-gc
+        k8s-app: xrootd-redi-a
     spec:
       tolerations:
       - key: "nautilus.io/noceph" 
@@ -36,7 +36,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
-              #fieldPath: spec.nodeName
         - name: POD_NAME
           valueFrom:
             fieldRef:
@@ -46,7 +45,7 @@ spec:
         ports:
         - containerPort: 2094
         - containerPort: 2213
-        name: xrootd-redi-gc
+        name: xrootd-redi-a
         resources:
           limits:
             cpu: 8

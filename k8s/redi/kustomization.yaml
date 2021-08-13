@@ -1,5 +1,5 @@
-#resources:
-#  - deploy.yaml
+resources:
+  - deploy.yaml
 
 configMapGenerator:
   - name: xrootd-redi-conf
@@ -25,4 +25,4 @@ generatorOptions:
   disableNameSuffixHash: true
 
 commonLabels:
-  app: xrootd-redi-gc
+  app: xrootd-redi-a

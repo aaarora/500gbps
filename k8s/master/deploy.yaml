@@ -50,11 +50,11 @@ spec:
               fieldPath: status.podIP
         resources:
           limits:
-            cpu: 20
-            memory: 10Gi
+            cpu: 5
+            memory: 2Gi
           requests:
-            cpu: 19
-            memory: 8Gi
+            cpu: 4
+            memory: 1Gi
         volumeMounts:
         - mountPath: /etc/pki/CA/private/OSG-Test-CA.key
           name: ca

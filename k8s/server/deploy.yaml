@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    k8s-app: xrootd-server-gc
-  name: xrootd-server-gc
+    k8s-app: xrootd-server-a
+  name: xrootd-server-a
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: xrootd-server-gc
+      k8s-app: xrootd-server-a
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,7 +18,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        k8s-app: xrootd-server-gc
+        k8s-app: xrootd-server-a
     spec:
       tolerations:
       - key: "nautilus.io/noceph" 
@@ -41,10 +41,10 @@ spec:
               - key: k8s-app
                 operator: In
                 values:
-                - xrootd-server-gc
-                - xrootd-server-b-gc
-                - xrootd-redi-gc
-                - xrootd-redi-b-gc
+                - xrootd-server-a
+                - xrootd-server-b
+                - xrootd-redi-a
+                - xrootd-redi-b
             topologyKey: "kubernetes.io/hostname"
       hostNetwork: True
       containers:
@@ -61,7 +61,7 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 2094
-        name: xrootd-server-gc
+        name: xrootd-server-a
         resources:
           limits:
             cpu: 8
