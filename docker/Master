@@ -1,7 +1,11 @@
 FROM opensciencegrid/software-base:fresh
 
 RUN yum -y install vim && \
-    curl -O https://kojihub0000.chtc.wisc.edu/kojifiles/packages/osg-ca-generator/1.4.0/1.osg35.el7/noarch/osg-ca-generator-1.4.0-1.osg35.el7.noarch.rpm && \
+    yum -y install gfal2-plugin-file gfal2-plugin-gridftp && \
+    yum -y install globus-gass-copy-progs && \
+    yum -y install xrootd-client
+
+RUN curl -O https://kojihub0000.chtc.wisc.edu/kojifiles/packages/osg-ca-generator/1.4.0/1.osg35.el7/noarch/osg-ca-generator-1.4.0-1.osg35.el7.noarch.rpm && \
     yum -y localinstall osg-ca-generator-1.4.0-1.osg35.el7.noarch.rpm
 
 RUN yum install gcc openssl-devel bzip2-devel libffi-devel -y && \
@@ -12,6 +16,6 @@ RUN yum install gcc openssl-devel bzip2-devel libffi-devel -y && \
     ./configure --enable-optimizations && \
     make altinstall
 
-RUN python3.8 -m pip install aiomultiprocess
+RUN python3.8 -m pip install aiomultiprocess && python3.8 -m pip install aiohttp && python3.8 -m pip install requests
 
 RUN adduser master
