@@ -1,6 +1,5 @@
 import logging
 import socket
-import sys
 
 def checkSocket(*args, port) -> None:
   for url in set(args):
@@ -12,6 +11,5 @@ def checkSocket(*args, port) -> None:
     except Exception as error:
       sock.close()
       logging.error("Error %s while connecting to socket for %s", error, url)
-      sys.exit(1)
-  return None
-
+      return False
+  return True

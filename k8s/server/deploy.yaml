@@ -5,7 +5,7 @@ metadata:
     k8s-app: xrootd-server-a
   name: xrootd-server-a
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       k8s-app: xrootd-server-a
@@ -64,11 +64,11 @@ spec:
         name: xrootd-server-a
         resources:
           limits:
-            cpu: 8
-            memory: 60Gi
-          requests:
-            cpu: 7
+            cpu: 40
             memory: 50Gi
+          requests:
+            cpu: 12
+            memory: 45Gi
         volumeMounts:
         - mountPath: /mnt/ramdisk/
           name: cache-vol
@@ -94,7 +94,9 @@ spec:
           name: cagen
           subPath: cagen.py
       nodeSelector:
-        kubernetes.io/hostname: stashcache.t2.ucsd.edu
+        nautilus.io/network: '100000'
+        nautilus.io/region: 'ucsd'
+        nautilus.io/processor: 'AMD_EPYC_7252_8-Core_Processor'
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -103,7 +105,7 @@ spec:
       - name: cache-vol
         emptyDir:
           medium: Memory
-          sizeLimit: 50Gi
+          sizeLimit: 40Gi
       - name: ca
         secret:
           secretName: https-self-certs

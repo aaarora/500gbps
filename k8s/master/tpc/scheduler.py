@@ -4,7 +4,7 @@ import asyncio
 from aiomultiprocess import Pool
 
 class TransferScheduler:
-  def __init__(self, source, destination, xrdport, numTransfers):
+  def __init__(self, source, destination, xrdport: int, numTransfers: int):
     self.source = source
     self.destination = destination
     self.xrdport = xrdport
@@ -27,14 +27,16 @@ class TransferScheduler:
     while True:
       process = await asyncio.create_subprocess_exec(
       *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+      
       stdout, stderr = await process.communicate()
       result = stdout.decode().strip()
+      print(result)
 
   async def runTransfers(self) -> None:
     queue = self.makeTransferQueue()
 
     logging.info("Starting Transfers")
-    async with Pool() as pool:
+    async with Pool(processes=4) as pool:
         await pool.map(self.worker, queue)
 
   def startTransfers(self) -> None:

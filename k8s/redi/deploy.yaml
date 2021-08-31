@@ -20,6 +20,9 @@ spec:
         k8s-app: xrootd-redi-a
     spec:
       tolerations:
+      - key: "nautilus.io/stashcache"
+        operator: "Exists"
+        effect: "NoSchedule"
       - key: "nautilus.io/noceph" 
         operator: "Exists"
         effect: "NoSchedule"
@@ -29,7 +32,7 @@ spec:
       - key: "nautilus.io/testing" 
         operator: "Exists"
         effect: "NoSchedule"
-      #hostNetwork: True
+      hostNetwork: True
       containers:
       - env:
         - name: OSG_FQDN
@@ -48,11 +51,11 @@ spec:
         name: xrootd-redi-a
         resources:
           limits:
+            cpu: 20
+            memory: 20Gi
+          requests:
             cpu: 8
             memory: 8Gi
-          requests:
-            cpu: 7
-            memory: 6Gi
         volumeMounts:
         - mountPath: /mnt/ramdisk/
           name: cache-vol
@@ -75,9 +78,7 @@ spec:
           name: cagen
           subPath: cagen.py
       nodeSelector:
-        topology.kubernetes.io/region: us-west
-        #nautilus.io/ue4: suncave
-        #nautilus.io/network: "100000"
+        kubernetes.io/hostname: k8s-igrok-02.calit2.optiputer.net
       dnsPolicy: ClusterFirstWithHostNet
       restartPolicy: Always
       schedulerName: default-scheduler

@@ -3,6 +3,7 @@ from utils import checkSocket
 
 import argparse
 import logging
+import sys
 
 def main(args) -> None:
   logging.basicConfig(filename='transfer.log', 
@@ -11,16 +12,17 @@ def main(args) -> None:
   format='%(asctime)s  %(levelname)s - %(message)s', 
   datefmt='%Y%m%d %H:%M:%S')
 
-  XRDPORT = 2094
-  checkSocket(args.source, args.destination, port=XRDPORT)
+  if not checkSocket(args.source, args.destination, port=args.port):
+    sys.exit(1)
   
-  tsched = TransferScheduler(args.source, args.destination, XRDPORT, args.numTransfers)
+  tsched = TransferScheduler(args.source, args.destination, args.port, args.numTransfers)
   tsched.startTransfers()
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Run TPC Tests')
   parser.add_argument('--source', type=str, help='Source Server')
-  parser.add_argument('--destination', type=str, help='Source Server')
-  parser.add_argument('--numTransfers', type=int, help='Source Server')
+  parser.add_argument('--destination', type=str, help='Dest Server')
+  parser.add_argument('--numTransfers', type=int, help='# of Transfers')
+  parser.add_argument('--port', type=int, help='XRootD Port', default=2094)
   args = parser.parse_args()
   main(args)
