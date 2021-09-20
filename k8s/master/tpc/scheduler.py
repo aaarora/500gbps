@@ -4,11 +4,12 @@ import asyncio
 from aiomultiprocess import Pool
 
 class TransferScheduler:
-  def __init__(self, source, destination, xrdport: int, numTransfers: int):
+  def __init__(self, source, destination, xrdport: int, numTransfers: int, numStreams: int):
     self.source = source
     self.destination = destination
     self.xrdport = xrdport
     self.numTransfers = numTransfers
+    self.numStreams = numStreams
   
   def makeTransferQueue(self):
     logging.info("Building queue...")
@@ -16,6 +17,7 @@ class TransferScheduler:
       logging.debug(f"Added {num}/{self.numTransfers} transfers to queue")
       cmd = ['curl', '-L', '-X', 'COPY']
       cmd += ['-H', 'Overwrite: T']
+      cmd += ['-H', f'X-Number-Of-Streams: {self.numStreams}']
       cmd += ['-H', f'Source: https://{self.source}:{self.xrdport}/testSourceFile{num}']
       cmd += [f'https://{self.destination}:{self.xrdport}/testDestFile{num}']
       cmd += ['--capath', '/etc/grid-security/certificates/']

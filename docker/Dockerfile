@@ -5,7 +5,6 @@ ADD influxdb.repo /etc/yum.repos.d/influxdb.repo
 RUN yum -y install vim && \
     yum -y install osg-xrootd-standalone --enablerepo=osg-upcoming && \
     yum -y install telegraf && \
-    curl -O https://kojihub0000.chtc.wisc.edu/kojifiles/packages/osg-ca-generator/1.4.0/1.osg35.el7/noarch/osg-ca-generator-1.4.0-1.osg35.el7.noarch.rpm && \
-    yum -y localinstall osg-ca-generator-1.4.0-1.osg35.el7.noarch.rpm
+    yum -y install http://uaf-10.t2.ucsd.edu/~aaarora/packages/osg-ca-generator-1.5.0.tar.gz
 
 ADD image-config.d/* /etc/osg/image-config.d/

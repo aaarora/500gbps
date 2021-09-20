@@ -5,7 +5,7 @@ metadata:
     k8s-app: xrootd-server-a
   name: xrootd-server-a
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       k8s-app: xrootd-server-a
@@ -21,18 +21,27 @@ spec:
         k8s-app: xrootd-server-a
     spec:
       tolerations:
-      - key: "nautilus.io/noceph" 
+#      - key: "nautilus.io/noceph" 
+#        operator: "Exists"
+#        effect: "NoSchedule"
+#      - key: "nautilus.io/ceph" 
+#        operator: "Exists"
+#        effect: "NoSchedule"
+#      - key: "nautilus.io/testing" 
+#        operator: "Exists"
+#        effect: "NoSchedule"
+#      - key: "nautilus.io/stashcache"
+#        operator: "Exists"
+#        effect: "NoSchedule"
+      - effect: "PreferNoSchedule"
+        key: "nvidia.com/gpu"
         operator: "Exists"
-        effect: "NoSchedule"
-      - key: "nautilus.io/ceph" 
-        operator: "Exists"
-        effect: "NoSchedule"
-      - key: "nautilus.io/testing" 
-        operator: "Exists"
-        effect: "NoSchedule"
-      - key: "nautilus.io/stashcache"
-        operator: "Exists"
-        effect: "NoSchedule"
+#      - effect: "NoSchedule"
+#        key: "nautilus.io/xrootd"
+#        operator: "Exists"
+#      - effect: "NoSchedule"
+#        key: "node.kubernetes.io/unschedulable"
+#        operator: "Exists"
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -64,11 +73,11 @@ spec:
         name: xrootd-server-a
         resources:
           limits:
-            cpu: 40
-            memory: 50Gi
+            cpu: 48
+            memory: 100Gi
           requests:
-            cpu: 12
-            memory: 45Gi
+            cpu: 5
+            memory: 10Gi
         volumeMounts:
         - mountPath: /mnt/ramdisk/
           name: cache-vol
@@ -90,13 +99,11 @@ spec:
         - mountPath: /etc/pki/CA/private/OSG-Test-CA.key
           name: ca
           subPath: OSG-Test-CA.pem
-        - mountPath: /usr/lib/python2.7/site-packages/cagen.py
-          name: cagen
-          subPath: cagen.py
       nodeSelector:
-        nautilus.io/network: '100000'
-        nautilus.io/region: 'ucsd'
-        nautilus.io/processor: 'AMD_EPYC_7252_8-Core_Processor'
+#        nautilus.io/network: '100000'
+#        nautilus.io/region: 'ucsd'
+#        nautilus.io/processor: 'AMD_EPYC_7252_8-Core_Processor'
+        kubernetes.io/hostname: k8s-gpu-03.sdsc.optiputer.net
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -105,7 +112,7 @@ spec:
       - name: cache-vol
         emptyDir:
           medium: Memory
-          sizeLimit: 40Gi
+          sizeLimit: 48Gi
       - name: ca
         secret:
           secretName: https-self-certs
@@ -113,12 +120,6 @@ spec:
           - key: OSG-Test-CA.pem
             path: OSG-Test-CA.pem
           defaultMode: 0644
-      - name: cagen
-        configMap:
-          name: cert-script
-          items:
-          - key: cagen.py
-            path: cagen.py
       - name: xrootd-server-conf
         configMap: 
           name: xrootd-server-conf

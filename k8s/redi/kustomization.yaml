@@ -1,5 +1,5 @@
 resources:
-  - deploy.yaml
+  #- deploy.yaml
 
 configMapGenerator:
   - name: xrootd-redi-conf
@@ -9,9 +9,6 @@ configMapGenerator:
   - name: xrootd-redi-supervisor
     files:
       - supervisord.conf
-  - name: cert-script
-    files:
-      - cagen.py
 
 secretGenerator:
 - name: telegraf-conf

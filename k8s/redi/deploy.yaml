@@ -32,7 +32,7 @@ spec:
       - key: "nautilus.io/testing" 
         operator: "Exists"
         effect: "NoSchedule"
-      hostNetwork: True
+      hostNetwork: true
       containers:
       - env:
         - name: OSG_FQDN
@@ -54,8 +54,8 @@ spec:
             cpu: 20
             memory: 20Gi
           requests:
-            cpu: 8
-            memory: 8Gi
+            cpu: 2
+            memory: 2Gi
         volumeMounts:
         - mountPath: /mnt/ramdisk/
           name: cache-vol
@@ -74,11 +74,11 @@ spec:
         - mountPath: /etc/pki/CA/private/OSG-Test-CA.key
           name: ca
           subPath: OSG-Test-CA.pem
-        - mountPath: /usr/lib/python2.7/site-packages/cagen.py
-          name: cagen
-          subPath: cagen.py
       nodeSelector:
-        kubernetes.io/hostname: k8s-igrok-02.calit2.optiputer.net
+        #kubernetes.io/hostname: k8s-igrok-02.calit2.ucsd.edu
+        nautilus.io/network: '100000'
+        nautilus.io/region: 'ucsd'
+        nautilus.io/processor: 'AMD_EPYC_7252_8-Core_Processor'
       dnsPolicy: ClusterFirstWithHostNet
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -93,12 +93,6 @@ spec:
           - key: OSG-Test-CA.pem
             path: OSG-Test-CA.pem
           defaultMode: 0644
-      - name: cagen
-        configMap:
-          name: cert-script
-          items:
-          - key: cagen.py
-            path: cagen.py
       - name: xrootd-redi-conf
         configMap: 
           name: xrootd-redi-conf

@@ -50,23 +50,20 @@ spec:
               fieldPath: status.podIP
         resources:
           limits:
-            cpu: 10
+            cpu: 11
             memory: 10Gi
           requests:
-            cpu: 4
-            memory: 2Gi
+            cpu: 10
+            memory: 6Gi
         volumeMounts:
         - mountPath: /etc/pki/CA/private/OSG-Test-CA.key
           name: ca
           subPath: OSG-Test-CA.pem
-        - mountPath: /usr/lib/python2.7/site-packages/cagen.py
-          name: cagen
-          subPath: cagen.py
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       nodeSelector:
-       kubernetes.io/hostname: k8s-igrok-01.calit2.optiputer.net 
+       kubernetes.io/hostname: k8s-igrok-02.calit2.optiputer.net 
       terminationGracePeriodSeconds: 30
       volumes:
       - name: cache-vol
@@ -78,6 +75,3 @@ spec:
           - key: OSG-Test-CA.pem
             path: OSG-Test-CA.pem
           defaultMode: 0644
-      - name: cagen
-        configMap:
-          name: cert-script
