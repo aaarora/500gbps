@@ -11,7 +11,8 @@ RUN yum install gcc openssl-devel bzip2-devel libffi-devel -y && \
     tar xzf py.tgz && \
     cd Python-3.8.7 && \
     ./configure --enable-optimizations && \
-    make altinstall
+    make altinstall && \
+    ln -s /usr/local/bin/python3.8 /usr/bin/python3
 
 RUN curl -O http://uaf-10.t2.ucsd.edu/~aaarora/packages/osg-ca-generator-1.5.0.tar.gz && \
     tar -xvf osg-ca-generator-1.5.0.tar.gz && \
