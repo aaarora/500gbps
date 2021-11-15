@@ -21,6 +21,12 @@ spec:
         k8s-app: xrootd-server-a
     spec:
       tolerations:
+      - key: "nautilus.io/nsi"
+        operator: "Exists"
+        effect: "NoSchedule"
+      - key: "node.kubernetes.io/unreachable"
+        operator: "Exists"
+        effect: "NoSchedule"
 #      - key: "nautilus.io/noceph" 
 #        operator: "Exists"
 #        effect: "NoSchedule"
@@ -33,9 +39,9 @@ spec:
 #      - key: "nautilus.io/stashcache"
 #        operator: "Exists"
 #        effect: "NoSchedule"
-      - effect: "PreferNoSchedule"
-        key: "nvidia.com/gpu"
-        operator: "Exists"
+#      - effect: "PreferNoSchedule"
+#        key: "nvidia.com/gpu"
+#        operator: "Exists"
 #      - effect: "NoSchedule"
 #        key: "nautilus.io/xrootd"
 #        operator: "Exists"
@@ -79,8 +85,8 @@ spec:
             cpu: 5
             memory: 10Gi
         volumeMounts:
-        - mountPath: /mnt/ramdisk/
-          name: cache-vol
+#        - mountPath: /mnt/ramdisk/
+#          name: cache-vol
         - mountPath: /etc/xrootd/xrootd-third-party-copy.cfg
           name: xrootd-server-conf
           subPath: xrootd-third-party-copy.cfg
@@ -103,16 +109,20 @@ spec:
 #        nautilus.io/network: '100000'
 #        nautilus.io/region: 'ucsd'
 #        nautilus.io/processor: 'AMD_EPYC_7252_8-Core_Processor'
-        kubernetes.io/hostname: k8s-gpu-03.sdsc.optiputer.net
+        kubernetes.io/hostname: k8s-gen4-01.sdsc.optiputer.net
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       terminationGracePeriodSeconds: 30
       volumes:
-      - name: cache-vol
-        emptyDir:
-          medium: Memory
-          sizeLimit: 48Gi
+#      - name: cache-vol
+#        emptyDir:
+#          medium: Memory
+#          sizeLimit: 48Gi
+      - name: hostroot
+        hostPath:
+          path: /
+          type: Directory
       - name: ca
         secret:
           secretName: https-self-certs
