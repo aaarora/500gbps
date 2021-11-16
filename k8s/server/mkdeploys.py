@@ -46,15 +46,39 @@ if __name__ == "__main__":
             "nvmes": ["/nvme4/", "/nvme5/", "/nvme6/"]
         }, 
         {
+            "node": "k8s-gen4-01.sdsc.optiputer.net", 
+            "port": "2096",
+            "interface": "enp33s0f0",
+            "nvmes": ["/nvme7/", "/nvme8/", "/nvme9/"]
+        }, 
+        {
+            "node": "k8s-gen4-01.sdsc.optiputer.net", 
+            "port": "2097",
+            "interface": "enp33s1f0",
+            "nvmes": ["/nvme10/", "/nvme11/", "/nvme12/"]
+        }, 
+        {
             "node": "k8s-gen4-02.sdsc.optiputer.net", 
             "port": "2094",
             "interface": "enp1s0f0",
-            "nvmes": ["/nvme7/", "/nvme8/", "/nvme9/"]
+            "nvmes": ["/nvme1/", "/nvme2/", "/nvme3/"]
         },
         {
             "node": "k8s-gen4-02.sdsc.optiputer.net", 
             "port": "2095",
             "interface": "enp1s0f1",
+            "nvmes": ["/nvme4/", "/nvme5/", "/nvme6/"]
+        },
+        {
+            "node": "k8s-gen4-02.sdsc.optiputer.net", 
+            "port": "2096",
+            "interface": "enp33s0f0",
+            "nvmes": ["/nvme7/", "/nvme8/", "/nvme9/"]
+        },
+        {
+            "node": "k8s-gen4-02.sdsc.optiputer.net", 
+            "port": "2097",
+            "interface": "enp33s1f0",
             "nvmes": ["/nvme10/", "/nvme11/", "/nvme12/"]
         }
     ]

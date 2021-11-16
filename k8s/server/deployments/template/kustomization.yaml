@@ -2,7 +2,7 @@ resources:
   - deploy.yaml
 
 configMapGenerator:
-  - name: xrootd-server-conf
+  - name: NAME_PLACEHOLDER-conf
     files:
       - xrootd-third-party-copy.cfg
       - auth-file-noauth
