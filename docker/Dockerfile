@@ -10,7 +10,7 @@ RUN yum -y install vim && \
 
 ADD osg-ca-generator-1.5.0.tar.gz /osg-ca-generator-1.5.0.tar.gz
 
-RUN tar -xvf osg-ca-generator-1.5.0.tar.gz && \
+RUN tar -xvf /osg-ca-generator-1.5.0.tar.gz && \
     cd osg-ca-generator-1.5.0 && \
     make install
 
