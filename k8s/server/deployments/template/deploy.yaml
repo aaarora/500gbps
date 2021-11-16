@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    k8s-app: xrootd-server-a
-  name: xrootd-server-a
+    k8s-app: NAME_PLACEHOLDER
+  name: NAME_PLACEHOLDER
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: xrootd-server-a
+      k8s-app: NAME_PLACEHOLDER
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,7 +18,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        k8s-app: xrootd-server-a
+        k8s-app: NAME_PLACEHOLDER
     spec:
       tolerations:
       - key: "nautilus.io/nsi"
@@ -48,19 +48,19 @@ spec:
 #      - effect: "NoSchedule"
 #        key: "node.kubernetes.io/unschedulable"
 #        operator: "Exists"
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: k8s-app
-                operator: In
-                values:
-                - xrootd-server-a
-                - xrootd-server-b
-                - xrootd-redi-a
-                - xrootd-redi-b
-            topologyKey: "kubernetes.io/hostname"
+#      affinity:
+#        podAntiAffinity:
+#          requiredDuringSchedulingIgnoredDuringExecution:
+#          - labelSelector:
+#              matchExpressions:
+#              - key: k8s-app
+#                operator: In
+#                values:
+#                - xrootd-server-a
+#                - xrootd-server-b
+#                - xrootd-redi-a
+#                - xrootd-redi-b
+#            topologyKey: "kubernetes.io/hostname"
       hostNetwork: True
       hostPID: True
       containers:
@@ -76,8 +76,8 @@ spec:
         image: aaarora/gc-500gbps:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 2094
-        name: xrootd-server-a
+        - containerPort: PORT_PLACEHOLDER
+        name: NAME_PLACEHOLDER
         securityContext:
           privileged: True
         resources:
@@ -93,9 +93,9 @@ spec:
         - mountPath: /etc/xrootd/xrootd-third-party-copy.cfg
           name: xrootd-server-conf
           subPath: xrootd-third-party-copy.cfg
-        - mountPath: /home/makeFile
+        - mountPath: /home/mkfile.sh
           name: xrootd-server-conf
-          subPath: makeFile
+          subPath: mkfile.sh
         - mountPath: /etc/xrootd/auth-file-noauth
           name: xrootd-server-conf
           subPath: auth-file-noauth
@@ -112,7 +112,7 @@ spec:
 #        nautilus.io/network: '100000'
 #        nautilus.io/region: 'ucsd'
 #        nautilus.io/processor: 'AMD_EPYC_7252_8-Core_Processor'
-        kubernetes.io/hostname: k8s-gen4-01.sdsc.optiputer.net
+        kubernetes.io/hostname: NODE_PLACEHOLDER
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -139,8 +139,8 @@ spec:
           items:
           - key: xrootd-third-party-copy.cfg
             path: xrootd-third-party-copy.cfg
-          - key: makeFile 
-            path: makeFile
+          - key: mkfile.sh 
+            path: mkfile.sh
           - key: auth-file-noauth
             path: auth-file-noauth
 #      - name: telegraf-conf
