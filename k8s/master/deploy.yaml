@@ -21,23 +21,17 @@ spec:
         k8s-app: tpc-master
     spec:
       tolerations:
-      - key: "nautilus.io/noceph" 
+      - key: "nautilus.io/nsi"
         operator: "Exists"
         effect: "NoSchedule"
-      - key: "nautilus.io/ceph" 
-        operator: "Exists"
-        effect: "NoSchedule"
-      - key: "nautilus.io/testing" 
-        operator: "Exists"
-        effect: "NoSchedule"
-      - key: "nautilus.io/stashcache" 
+      - key: "node.kubernetes.io/unreachable"
         operator: "Exists"
         effect: "NoSchedule"
       containers:
       - image: aaarora/tpc-master-xrootd:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - containerPort: 2096
         name: tpc-master
         lifecycle:
           postStart:
@@ -59,11 +53,11 @@ spec:
         - mountPath: /etc/pki/CA/private/OSG-Test-CA.key
           name: ca
           subPath: OSG-Test-CA.pem
-      dnsPolicy: ClusterFirst
+      dnsPolicy: Default # TODO: check this?
       restartPolicy: Always
       schedulerName: default-scheduler
       nodeSelector:
-       kubernetes.io/hostname: k8s-igrok-02.calit2.optiputer.net 
+        kubernetes.io/hostname: k8s-gen4-07.ultralight.org
       terminationGracePeriodSeconds: 30
       volumes:
       - name: cache-vol
