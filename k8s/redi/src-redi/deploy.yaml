@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: src-redi
+  name: src-redi
+spec:
+  selector:
+    matchLabels:
+      k8s-app: src-redi
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        k8s-app: src-redi
+    spec:
+#      tolerations:
+#      - key: "nautilus.io/stashcache"
+#        operator: "Exists"
+#        effect: "NoSchedule"
+      hostNetwork: true
+      containers:
+      - env:
+        - name: OSG_FQDN
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        image: aaarora/gc-500gbps:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9001
+        - containerPort: 1094
+        name: src-redi
+        resources:
+          limits:
+            cpu: 20
+            memory: 20Gi
+          requests:
+            cpu: 2
+            memory: 2Gi
+        volumeMounts:
+        - mountPath: /mnt/ramdisk/
+          name: cache-vol
+        - mountPath: /etc/xrootd/xrootd-third-party-copy.cfg
+          name: src-redi-conf
+          subPath: xrootd-third-party-copy.cfg
+        - mountPath: /etc/xrootd/auth-file-noauth
+          name: src-redi-conf
+          subPath: auth-file-noauth
+        - mountPath: /etc/supervisord.d/10-xrootd.conf
+          name: src-redi-supervisor
+          subPath: supervisord.conf
+#        - mountPath: /etc/telegraf/telegraf.conf
+#          name: telegraf-conf
+#          subPath: telegraf.conf
+        - mountPath: /etc/pki/CA/private/OSG-Test-CA.key
+          name: ca
+          subPath: OSG-Test-CA.pem
+      nodeSelector:
+        kubernetes.io/hostname: k8s1-pb10.ultralight.org
+      dnsPolicy: Default
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: cache-vol
+        emptyDir: {}
+      - name: ca
+        secret:
+          secretName: https-self-certs
+          items:
+          - key: OSG-Test-CA.pem
+            path: OSG-Test-CA.pem
+          defaultMode: 0644
+      - name: src-redi-conf
+        configMap: 
+          name: src-redi-conf
+          items:
+          - key: xrootd-third-party-copy.cfg
+            path: xrootd-third-party-copy.cfg
+          - key: auth-file-noauth
+            path: auth-file-noauth
+#      - name: telegraf-conf
+#        secret:
+#          secretName: telegraf-conf
+#          items:
+#          - key: telegraf.conf
+#            path: telegraf.conf
+#          defaultMode: 0644
+      - name: src-redi-supervisor
+        configMap: 
+          name: src-redi-supervisor
+          items:
+          - key: supervisord.conf
+            path: supervisord.conf

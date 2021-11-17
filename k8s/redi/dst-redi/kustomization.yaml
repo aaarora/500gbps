@@ -1,0 +1,25 @@
+resources:
+  - deploy.yaml
+
+configMapGenerator:
+  - name: dst-redi-conf
+    files:
+      - xrootd-third-party-copy.cfg
+      - auth-file-noauth
+  - name: dst-redi-supervisor
+    files:
+      - supervisord.conf
+
+secretGenerator:
+#- name: telegraf-conf
+#  files:
+#    - telegraf.conf
+- name: https-self-certs
+  files:
+    - OSG-Test-CA.pem
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+commonLabels:
+  app: dst-redi
