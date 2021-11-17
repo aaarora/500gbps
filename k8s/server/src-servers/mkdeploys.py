@@ -29,14 +29,31 @@ if __name__ == "__main__":
             os.remove(f)
         os.rmdir(old_deployment)
 
-    # TODO: add src configs! (waiting for things to get fixed...)
     src_configs = [
-        # {
-        #     "node": "k8s-gen4-01.sdsc.optiputer.net", 
-        #     "port": "2094",
-        #     "interface": "enp1s0f0",
-        #     "nvmes": ["/nvme1/", "/nvme2/", "/nvme3/"]
-        # }, 
+        {
+            "node": "k8s-gen4-07.ultralight.org", 
+            "port": "2094",
+            "interface": "enp33s0.3911",
+            "nvmes": ["/nvme1/", "/nvme2/", "/nvme3/"]
+        }, 
+        {
+            "node": "k8s-gen4-07.ultralight.org", 
+            "port": "2095",
+            "interface": "enp33s0.3912",
+            "nvmes": ["/nvme4/", "/nvme5/", "/nvme6/"]
+        }, 
+        {
+            "node": "dtn-man239.northwestern.edu", 
+            "port": "2094",
+            "interface": "p1p1",
+            "nvmes": ["/nvme1/", "/nvme2/", "/nvme3/"]
+        }, 
+        {
+            "node": "dtn-man239.northwestern.edu", 
+            "port": "2095",
+            "interface": "p4p2",
+            "nvmes": ["/nvme4/", "/nvme5/", "/nvme6/"]
+        }, 
     ]
 
     kube_cmd = subprocess.Popen(
