@@ -19,10 +19,10 @@ spec:
       labels:
         k8s-app: src-redi
     spec:
-#      tolerations:
-#      - key: "nautilus.io/stashcache"
-#        operator: "Exists"
-#        effect: "NoSchedule"
+      tolerations:
+      - key: "nautilus.io/stashcache"
+        operator: "Exists"
+        effect: "NoSchedule"
       hostNetwork: true
       containers:
       - env:
@@ -59,9 +59,9 @@ spec:
         - mountPath: /etc/supervisord.d/10-xrootd.conf
           name: src-redi-supervisor
           subPath: supervisord.conf
-#        - mountPath: /etc/telegraf/telegraf.conf
-#          name: telegraf-conf
-#          subPath: telegraf.conf
+        - mountPath: /etc/telegraf/telegraf.conf
+          name: telegraf-conf
+          subPath: telegraf.conf
         - mountPath: /etc/pki/CA/private/OSG-Test-CA.key
           name: ca
           subPath: OSG-Test-CA.pem
@@ -89,13 +89,13 @@ spec:
             path: xrootd-third-party-copy.cfg
           - key: auth-file-noauth
             path: auth-file-noauth
-#      - name: telegraf-conf
-#        secret:
-#          secretName: telegraf-conf
-#          items:
-#          - key: telegraf.conf
-#            path: telegraf.conf
-#          defaultMode: 0644
+      - name: telegraf-conf
+        secret:
+          secretName: telegraf-conf
+          items:
+          - key: telegraf.conf
+            path: telegraf.conf
+          defaultMode: 0644
       - name: src-redi-supervisor
         configMap: 
           name: src-redi-supervisor

@@ -66,9 +66,9 @@ spec:
         - mountPath: /etc/supervisord.d/10-xrootd.conf
           name: xrootd-server-supervisor
           subPath: supervisord.conf
-#        - mountPath: /etc/telegraf/telegraf.conf
-#          name: telegraf-conf
-#          subPath: telegraf.conf
+        - mountPath: /etc/telegraf/telegraf.conf
+          name: telegraf-conf
+          subPath: telegraf.conf
         - mountPath: /etc/pki/CA/private/OSG-Test-CA.key
           name: ca
           subPath: OSG-Test-CA.pem
@@ -100,13 +100,13 @@ spec:
             path: mkfile.sh
           - key: auth-file-noauth
             path: auth-file-noauth
-#      - name: telegraf-conf
-#        secret:
-#          secretName: telegraf-conf
-#          items:
-#          - key: telegraf.conf
-#            path: telegraf.conf
-#          defaultMode: 0644
+      - name: telegraf-conf
+        secret:
+          secretName: telegraf-conf
+          items:
+          - key: telegraf.conf
+            path: telegraf.conf
+          defaultMode: 0644
       - name: xrootd-server-supervisor
         configMap: 
           name: xrootd-server-supervisor
