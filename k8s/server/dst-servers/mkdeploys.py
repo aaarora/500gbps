@@ -1,5 +1,6 @@
 import os
 import glob
+import subprocess
 
 def write_deployment(config, name, redi=""):
     os.makedirs(f"deployments/{name}", exist_ok=True)
@@ -28,10 +29,6 @@ if __name__ == "__main__":
             os.remove(f)
         os.rmdir(old_deployment)
 
-    src_configs = [
-        # {"node": "k8s-gen4-07.ultralight.org", "nvme": "/nvme1"}, 
-        # {"node": "dtn-man239.northwestern.edu", "nvme": "/nvme2"}
-    ]
     dst_configs = [
         {
             "node": "k8s-gen4-01.sdsc.optiputer.net", 
@@ -82,12 +79,16 @@ if __name__ == "__main__":
             "nvmes": ["/nvme10/", "/nvme11/", "/nvme12/"]
         }
     ]
-    for i, src_config in enumerate(src_configs):
-        N = src_config["node"].split(".")[0].split("-")[-1]
-        write_deployment(src_config, f"src-origin-{N}-{src_config['interface']}")
+
+    kube_cmd = subprocess.Popen(
+        'kubectl get pods -l k8s-app=dst-redi -o jsonpath="{.items[0].status.podIP}"'.split(),
+        stdout = subprocess.PIPE
+    )
+    dst_redi, _ = kube_cmd.communicate()
+    dst_redi = dst_redi[1:-1].decode("utf-8") # remove quotation marks and decode
     for i, dst_config in enumerate(dst_configs):
         N = dst_config["node"].split(".")[0].split("-")[-1]
-        write_deployment(dst_config, f"dst-origin-{N}-{dst_config['interface']}")
+        write_deployment(dst_config, f"dst-origin-{N}-{dst_config['interface']}", redi=dst_redi)
 
     with open("Makefile", "w") as f_out:
         f_out.write("delete:\n")

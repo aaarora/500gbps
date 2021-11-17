@@ -74,7 +74,7 @@ spec:
           subPath: OSG-Test-CA.pem
       nodeSelector:
         kubernetes.io/hostname: NODE_PLACEHOLDER
-      dnsPolicy: ClusterFirst
+      dnsPolicy: Default
       restartPolicy: Always
       schedulerName: default-scheduler
       terminationGracePeriodSeconds: 30
