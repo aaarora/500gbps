@@ -64,7 +64,7 @@ if __name__ == "__main__":
     src_redi = src_redi[1:-1].decode("utf-8") # remove quotation marks and decode
     for i, src_config in enumerate(src_configs):
         N = src_config["node"].split(".")[0].split("-")[-1]
-        write_deployment(src_config, f"src-origin-{N}-{src_config['interface']}", redi=src_redi)
+        write_deployment(src_config, f"src-origin-{N}-{src_config['interface'].replace('.', '-')}", redi=src_redi)
 
     with open("Makefile", "w") as f_out:
         f_out.write("delete:\n")

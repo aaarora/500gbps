@@ -88,7 +88,7 @@ if __name__ == "__main__":
     dst_redi = dst_redi[1:-1].decode("utf-8") # remove quotation marks and decode
     for i, dst_config in enumerate(dst_configs):
         N = dst_config["node"].split(".")[0].split("-")[-1]
-        write_deployment(dst_config, f"dst-origin-{N}-{dst_config['interface']}", redi=dst_redi)
+        write_deployment(dst_config, f"dst-origin-{N}-{dst_config['interface'].replace('.', '-')}", redi=dst_redi)
 
     with open("Makefile", "w") as f_out:
         f_out.write("delete:\n")
