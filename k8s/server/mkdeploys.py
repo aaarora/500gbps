@@ -14,7 +14,7 @@ def write_deployment(config, name, redi="", deployment_dir="deployments", templa
             text = text.replace("NODE_PLACEHOLDER", config["node"])
             text = text.replace("NVME_PLACEHOLDER", "\n".join([f"oss.space public {n}" for n in config["nvmes"]]))
             text = text.replace("NAME_PLACEHOLDER", name)
-            text = text.replace("REDI_PLACEHOLDER", redi)
+            text = text.replace("REDI_PLACEHOLDER", f"{redi}:{config['redi_port']}")
             text = text.replace("INTF_PLACEHOLDER", config["interface"])
             text = text.replace("PORT_PLACEHOLDER", config["port"])
             text = text.replace("VLAN_PLACEHOLDER", config["vlan"])
@@ -64,6 +64,7 @@ if __name__ == "__main__":
             "port": "2094",
             "interface": "enp1s0f0",
             "vlan": "10.16.23.5",
+            "redi_port": "2213",
             "nvmes": ["/nvme1/", "/nvme2/", "/nvme3/"]
         }, 
         {
@@ -71,6 +72,7 @@ if __name__ == "__main__":
             "port": "2095",
             "interface": "enp1s0f1",
             "vlan": "10.16.25.5",
+            "redi_port": "2213",
             "nvmes": ["/nvme4/", "/nvme5/", "/nvme6/"]
         }, 
         {
@@ -78,6 +80,7 @@ if __name__ == "__main__":
             "port": "2096",
             "interface": "enp33s0f0",
             "vlan": "10.0.11.5",
+            "redi_port": "2213",
             "nvmes": ["/nvme7/", "/nvme8/", "/nvme9/"]
         }, 
         {
@@ -85,6 +88,7 @@ if __name__ == "__main__":
             "port": "2097",
             "interface": "enp33s1f0",
             "vlan": "10.0.12.5",
+            "redi_port": "2213",
             "nvmes": ["/nvme10/", "/nvme11/", "/nvme12/"]
         }, 
         {
@@ -92,6 +96,7 @@ if __name__ == "__main__":
             "port": "2094",
             "interface": "enp1s0f0",
             "vlan": "10.16.23.6",
+            "redi_port": "2213",
             "nvmes": ["/nvme1/", "/nvme2/", "/nvme3/"]
         },
         {
@@ -99,6 +104,7 @@ if __name__ == "__main__":
             "port": "2095",
             "interface": "enp1s0f1",
             "vlan": "10.16.25.6",
+            "redi_port": "2213",
             "nvmes": ["/nvme4/", "/nvme5/", "/nvme6/"]
         },
         {
@@ -106,6 +112,7 @@ if __name__ == "__main__":
             "port": "2096",
             "interface": "enp33s0f0",
             "vlan": "10.0.11.6",
+            "redi_port": "2213",
             "nvmes": ["/nvme7/", "/nvme8/", "/nvme9/"]
         },
         {
@@ -113,6 +120,7 @@ if __name__ == "__main__":
             "port": "2097",
             "interface": "enp33s1f0",
             "vlan": "10.0.12.6 ",
+            "redi_port": "2213",
             "nvmes": ["/nvme10/", "/nvme11/", "/nvme12/"]
         }
     ]
@@ -124,6 +132,7 @@ if __name__ == "__main__":
             "port": "2094",
             "interface": "enp33s0.3911",
             "vlan": "10.0.11.100",
+            "redi_port": "9001",
             "nvmes": ["/mnt/ramdisk"]
         }, 
         {
@@ -131,6 +140,7 @@ if __name__ == "__main__":
             "port": "2095",
             "interface": "enp33s0.3912",
             "vlan": "10.0.12.100",
+            "redi_port": "9001",
             "nvmes": ["/mnt/ramdisk"]
         }, 
         {
@@ -138,6 +148,7 @@ if __name__ == "__main__":
             "port": "2094",
             "interface": "p1p1",
             "vlan": "10.16.23.1",
+            "redi_port": "9001",
             "nvmes": ["/nvme1/", "/nvme2/", "/nvme3/"]
         }, 
         {
@@ -145,6 +156,7 @@ if __name__ == "__main__":
             "port": "2095",
             "interface": "p4p2",
             "vlan": "10.16.25.1",
+            "redi_port": "9001",
             "nvmes": ["/nvme4/", "/nvme5/", "/nvme6/"]
         }, 
     ]
