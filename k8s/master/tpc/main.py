@@ -21,7 +21,7 @@ def main(args) -> None:
     args.source, 
     args.destination, 
     args.numTransfers, 
-    ags.numBatches, 
+    args.numBatches, 
     args.numStreams
   )
   tsched.startTransfers()
