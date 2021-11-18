@@ -9,3 +9,4 @@ for i in ${!nvmes[@]}; do
     fi
 done
 chown xrootd:xrootd /nvme*
+chown xrootd:xrootd /mnt
