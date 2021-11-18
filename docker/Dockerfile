@@ -4,7 +4,6 @@ ADD influxdb.repo /etc/yum.repos.d/influxdb.repo
 
 RUN yum -y install vim && \
     yum -y install osg-xrootd-standalone --enablerepo=osg-upcoming && \
-    yum -y install telegraf && \
     yum -y install nvme-cli && \
     yum -y install xfsprogs
 
