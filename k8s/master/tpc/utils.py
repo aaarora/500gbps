@@ -6,7 +6,7 @@ def checkSocket(*args) -> None:
     hostname, port = url.split(":")
     sock = socket.socket()
     try:
-      sock.connect((hostname, port))
+      sock.connect((hostname, int(port)))
       logging.info("Succesfully contacted socket on port %s for %s", port, hostname)
       sock.close()
     except Exception as error:
