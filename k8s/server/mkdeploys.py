@@ -132,23 +132,23 @@ if __name__ == "__main__":
             "port": "2094",
             "interface": "enp33s0.3911",
             "vlan": "10.0.11.100",
-            "redi_port": "9001",
-            "nvmes": ["/mnt/ramdisk"]
+            "redi_port": "1094",
+            "nvmes": ["/ramdisk"]
         }, 
         {
             "node": "k8s-gen4-07.ultralight.org", 
             "port": "2095",
             "interface": "enp33s0.3912",
             "vlan": "10.0.12.100",
-            "redi_port": "9001",
-            "nvmes": ["/mnt/ramdisk"]
+            "redi_port": "1094",
+            "nvmes": ["/ramdisk"]
         }, 
         {
             "node": "dtn-man239.northwestern.edu", 
             "port": "2094",
             "interface": "p1p1",
             "vlan": "10.16.23.1",
-            "redi_port": "9001",
+            "redi_port": "1094",
             "nvmes": ["/nvme1/", "/nvme2/", "/nvme3/"]
         }, 
         {
@@ -156,7 +156,7 @@ if __name__ == "__main__":
             "port": "2095",
             "interface": "p4p2",
             "vlan": "10.16.25.1",
-            "redi_port": "9001",
+            "redi_port": "1094",
             "nvmes": ["/nvme4/", "/nvme5/", "/nvme6/"]
         }, 
     ]
