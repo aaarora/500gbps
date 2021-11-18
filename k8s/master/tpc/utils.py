@@ -1,12 +1,13 @@
 import logging
 import socket
 
-def checkSocket(*args, port) -> None:
+def checkSocket(*args) -> None:
   for url in set(args):
+    hostname, port = url.split(":")
     sock = socket.socket()
     try:
-      sock.connect((url,port))
-      logging.info("Succesfully contacted socket on port %s for %s", port, url)
+      sock.connect((hostname, port))
+      logging.info("Succesfully contacted socket on port %s for %s", port, hostname)
       sock.close()
     except Exception as error:
       sock.close()

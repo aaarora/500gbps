@@ -5,10 +5,9 @@ from aiomultiprocess import Pool
 from math import ceil
 
 class TransferScheduler:
-  def __init__(self, source, destination, xrdport: int, numTransfers: int, numBatches: int, numStreams: int):
+  def __init__(self, source, destination, numTransfers: int, numBatches: int, numStreams: int):
     self.source = source
     self.destination = destination
-    self.xrdport = xrdport
     self.numTransfers = numTransfers
     self.numBatches = numBatches
     self.numStreams = numStreams
@@ -20,8 +19,8 @@ class TransferScheduler:
       cmd = ['curl', '-L', '-X', 'COPY']
       cmd += ['-H', 'Overwrite: T']
       cmd += ['-H', f'X-Number-Of-Streams: {self.numStreams}']
-      cmd += ['-H', f'Source: https://{self.source}:{self.xrdport}/testSourceFile{num}']
-      cmd += [f'https://{self.destination}:{self.xrdport}/testDestFile{num}']
+      cmd += ['-H', f'Source: https://{self.source}/testSourceFile{num}']
+      cmd += [f'https://{self.destination}/testDestFile{num}']
       cmd += ['--capath', '/etc/grid-security/certificates/']
       yield cmd
     logging.info("Queue built successfully")
