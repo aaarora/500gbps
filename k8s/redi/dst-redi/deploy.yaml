@@ -59,9 +59,6 @@ spec:
         - mountPath: /etc/supervisord.d/10-xrootd.conf
           name: dst-redi-supervisor
           subPath: supervisord.conf
-        - mountPath: /etc/telegraf/telegraf.conf
-          name: telegraf-conf
-          subPath: telegraf.conf
         - mountPath: /etc/pki/CA/private/OSG-Test-CA.key
           name: ca
           subPath: OSG-Test-CA.pem
@@ -89,13 +86,6 @@ spec:
             path: xrootd-third-party-copy.cfg
           - key: auth-file-noauth
             path: auth-file-noauth
-      - name: telegraf-conf
-        secret:
-          secretName: telegraf-conf
-          items:
-          - key: telegraf.conf
-            path: telegraf.conf
-          defaultMode: 0644
       - name: dst-redi-supervisor
         configMap: 
           name: dst-redi-supervisor
