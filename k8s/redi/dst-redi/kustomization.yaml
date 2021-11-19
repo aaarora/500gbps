@@ -11,9 +11,6 @@ configMapGenerator:
       - supervisord.conf
 
 secretGenerator:
-- name: telegraf-conf
-  files:
-    - telegraf.conf
 - name: https-self-certs
   files:
     - OSG-Test-CA.pem
