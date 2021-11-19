@@ -5,16 +5,18 @@ from aiomultiprocess import Pool
 from math import ceil
 
 class TransferScheduler:
-  def __init__(self, source, destination, numTransfers: int, numBatches: int, numStreams: int):
+  def __init__(self, source, destination, start: int, stop: int, numBatches: int, numStreams: int, numProcs: int):
     self.source = source
     self.destination = destination
-    self.numTransfers = numTransfers
+    self.start = start
+    self.stop = stop
     self.numBatches = numBatches
     self.numStreams = numStreams
+    self.numProcs = numProcs
   
-  def makeTransferQueue(self, start, stop):
+  def makeTransferQueue(self, bStart, bStop):
     logging.info("Building queue...")
-    for num in range(start, stop):
+    for num in range(bStart, bStop):
       logging.debug(f"Added {num}/{self.numTransfers} transfers to queue")
       cmd = ['curl', '-L', '-X', 'COPY']
       cmd += ['-H', 'Overwrite: T']
@@ -36,16 +38,17 @@ class TransferScheduler:
       result = stdout.decode().strip()
       print(result)
 
-  async def runTransfers(self, start, stop) -> None:
-    queue = self.makeTransferQueue(start, stop)
+  async def runTransfers(self, bStart, bStop) -> None:
+    queue = self.makeTransferQueue(bStart, bStop)
 
     logging.info("Starting Transfers")
-    async with Pool(processes=4) as pool:
+    async with Pool(processes=self.numProcs) as pool:
       await pool.map(self.worker, queue)
 
   def startTransfers(self) -> None:
-    batchSize = ceil(self.numTransfers/self.numBatches)
+    numTransfers = self.stop - self.start
+    batchSize = ceil(numTransfers/self.numBatches)
     for b in range(self.numBatches):
-      start = b*batchSize
-      stop = min(self.numTransfers, (b+1)*batchSize)
-      asyncio.run(self.runTransfers(start, stop))
+      bStart = b*batchSize
+      bStop = min(self.stop, (b+1)*batchSize)
+      asyncio.run(self.runTransfers(bStart, bStop))
