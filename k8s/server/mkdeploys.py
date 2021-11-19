@@ -86,7 +86,7 @@ if __name__ == "__main__":
         {
             "node": "k8s-gen4-01.sdsc.optiputer.net", 
             "port": "2097",
-            "interface": "enp33s1f0",
+            "interface": "enp33s0f1",
             "vlan": "10.0.12.5",
             "redi_port": "2213",
             "nvmes": ["/nvme10/", "/nvme11/", "/nvme12/"]
@@ -118,7 +118,7 @@ if __name__ == "__main__":
         {
             "node": "k8s-gen4-02.sdsc.optiputer.net", 
             "port": "2097",
-            "interface": "enp33s1f0",
+            "interface": "enp33s0f1",
             "vlan": "10.0.12.6 ",
             "redi_port": "2213",
             "nvmes": ["/nvme10/", "/nvme11/", "/nvme12/"]
