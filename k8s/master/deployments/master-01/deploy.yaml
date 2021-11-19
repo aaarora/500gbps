@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    k8s-app: tpc-master
-  name: tpc-master
+    k8s-app: tpc-master-01
+  name: tpc-master-01
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: tpc-master
+      k8s-app: tpc-master-01
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,7 +18,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        k8s-app: tpc-master
+        k8s-app: tpc-master-01
     spec:
       tolerations:
       - key: "nautilus.io/nsi"
@@ -31,8 +31,8 @@ spec:
       - image: aaarora/tpc-master-xrootd:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 2096
-        name: tpc-master
+        - containerPort: 2098
+        name: tpc-master-01
         lifecycle:
           postStart:
             exec:
@@ -44,20 +44,20 @@ spec:
               fieldPath: status.podIP
         resources:
           limits:
-            cpu: 11
+            cpu: 14
             memory: 10Gi
           requests:
-            cpu: 10
+            cpu: 12
             memory: 6Gi
         volumeMounts:
         - mountPath: /etc/pki/CA/private/OSG-Test-CA.key
           name: ca
           subPath: OSG-Test-CA.pem
-      dnsPolicy: Default # TODO: check this?
+      dnsPolicy: Default
       restartPolicy: Always
       schedulerName: default-scheduler
       nodeSelector:
-        kubernetes.io/hostname: k8s-gen4-07.ultralight.org
+        kubernetes.io/hostname: k8s-gen4-01.sdsc.optiputer.net
       terminationGracePeriodSeconds: 30
       volumes:
       - name: cache-vol

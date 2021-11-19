@@ -5,4 +5,4 @@ generatorOptions:
   disableNameSuffixHash: true
 
 commonLabels:
-  app: tpc-master
+  app: tpc-master-01
