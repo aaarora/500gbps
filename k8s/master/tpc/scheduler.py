@@ -16,8 +16,9 @@ class TransferScheduler:
   
   def makeTransferQueue(self, bStart, bStop):
     logging.info("Building queue...")
+    numTransfers = self.stop - self.start
     for num in range(bStart, bStop):
-      logging.debug(f"Added {num}/{self.numTransfers} transfers to queue")
+      logging.debug(f"Added {num}/{numTransfers} transfers to queue")
       cmd = ['curl', '-L', '-X', 'COPY']
       cmd += ['-H', 'Overwrite: T']
       cmd += ['-H', f'X-Number-Of-Streams: {self.numStreams}']
@@ -49,6 +50,6 @@ class TransferScheduler:
     numTransfers = self.stop - self.start
     batchSize = ceil(numTransfers/self.numBatches)
     for b in range(self.numBatches):
-      bStart = b*batchSize
-      bStop = min(self.stop, (b+1)*batchSize)
+      bStart = self.start + b*batchSize
+      bStop = min(self.stop, self.start + (b+1)*batchSize)
       asyncio.run(self.runTransfers(bStart, bStop))
