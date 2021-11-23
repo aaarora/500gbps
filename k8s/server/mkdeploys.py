@@ -18,10 +18,10 @@ def write_deployment(config, name, redi="", deployment_dir="deployments", templa
             text = text.replace("INTF_PLACEHOLDER", config["interface"])
             text = text.replace("PORT_PLACEHOLDER", config["port"])
             text = text.replace("VLAN_PLACEHOLDER", config["vlan"])
-        with open(template.replace(f"{template_dir}/", f"{deployment_dir}/{name}/"), "w") as f_out:
+        with open(f"{deployment_dir}/{name}/{template.split('/')[-1]}", "w") as f_out:
             f_out.write(text)
 
-def write_deployments(configs, base_dir="servers", server_name="origin", redi_name="redi"):
+def write_deployments(configs, base_dir="servers", template_dir="template", server_name="origin", redi_name=""):
     os.makedirs(base_dir, exist_ok=True)
     deployment_dir = f"{base_dir}/deployments"
     for old_deployment in __get_deployments(deployment_dir):
@@ -29,19 +29,23 @@ def write_deployments(configs, base_dir="servers", server_name="origin", redi_na
             os.remove(f)
         os.rmdir(old_deployment)
 
-    kube_cmd = subprocess.Popen(
-        ["kubectl", "get", "pods", "-l", f"k8s-app={redi_name}", "-o", 'jsonpath="{.items[0].status.podIP}"'],
-        stdout = subprocess.PIPE
-    )
-    redi, _ = kube_cmd.communicate()
-    redi = redi[1:-1].decode("utf-8") # remove quotation marks and decode
+    if redi_name != "":
+        kube_cmd = subprocess.Popen(
+            ["kubectl", "get", "pods", "-l", f"k8s-app={redi_name}", "-o", 'jsonpath="{.items[0].status.podIP}"'],
+            stdout = subprocess.PIPE
+        )
+        redi, _ = kube_cmd.communicate()
+        redi = redi[1:-1].decode("utf-8") # remove quotation marks and decode
+    else:
+        redi = ""
     for i, config in enumerate(configs):
         N = config["node"].split(".")[0].split("-")[-1]
         write_deployment(
             config, 
             f"{server_name}-{N}-{config['interface'].replace('.', '-')}", 
             redi=redi,
-            deployment_dir=deployment_dir
+            deployment_dir=deployment_dir,
+            template_dir=template_dir
         )
 
     with open(f"{base_dir}/Makefile", "w") as f_out:
@@ -124,7 +128,7 @@ if __name__ == "__main__":
             "nvmes": ["/nvme10/", "/nvme11/", "/nvme12/"]
         }
     ]
-    write_deployments(dst_configs, base_dir="dst-servers", server_name="dst-origin", redi_name="dst-redi")
+    write_deployments(dst_configs, base_dir="dst-servers", template_dir="templates/dst-server", server_name="dst-origin")
 
     src_configs = [
         {
@@ -133,7 +137,7 @@ if __name__ == "__main__":
             "interface": "enp33s0.3911",
             "vlan": "10.0.11.100",
             "redi_port": "1094",
-            "nvmes": ["/ramdisk"]
+            "nvmes": []
         }, 
         {
             "node": "k8s-gen4-07.ultralight.org", 
@@ -141,23 +145,23 @@ if __name__ == "__main__":
             "interface": "enp33s0.3912",
             "vlan": "10.0.12.100",
             "redi_port": "1094",
-            "nvmes": ["/ramdisk"]
+            "nvmes": []
         }, 
-        {
-            "node": "dtn-man239.northwestern.edu", 
-            "port": "2094",
-            "interface": "p1p1",
-            "vlan": "10.16.23.1",
-            "redi_port": "1094",
-            "nvmes": ["/nvme1/", "/nvme2/", "/nvme3/"]
-        }, 
-        {
-            "node": "dtn-man239.northwestern.edu", 
-            "port": "2095",
-            "interface": "p4p2",
-            "vlan": "10.16.25.1",
-            "redi_port": "1094",
-            "nvmes": ["/nvme4/", "/nvme5/", "/nvme6/"]
-        }, 
+        # {
+        #     "node": "dtn-man239.northwestern.edu", 
+        #     "port": "2094",
+        #     "interface": "p1p1",
+        #     "vlan": "10.16.23.1",
+        #     "redi_port": "1094",
+        #     "nvmes": ["/nvme1/", "/nvme2/", "/nvme3/"]
+        # }, 
+        # {
+        #     "node": "dtn-man239.northwestern.edu", 
+        #     "port": "2095",
+        #     "interface": "p4p2",
+        #     "vlan": "10.16.25.1",
+        #     "redi_port": "1094",
+        #     "nvmes": ["/nvme4/", "/nvme5/", "/nvme6/"]
+        # }, 
     ]
-    write_deployments(src_configs, base_dir="src-servers", server_name="src-origin", redi_name="src-redi")
+    write_deployments(src_configs, base_dir="src-servers", template_dir="templates/src-server", server_name="src-origin")

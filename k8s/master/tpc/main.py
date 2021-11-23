@@ -20,6 +20,7 @@ def main(args) -> None:
   tsched = TransferScheduler(
     args.source, 
     args.destination, 
+    args.protocol,
     args.start, 
     args.stop, 
     args.numBatches, 
@@ -32,6 +33,7 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Run TPC Tests')
   parser.add_argument('--source', type=str, help='Source Server:PORT')
   parser.add_argument('--destination', type=str, help='Dest Server:PORT')
+  parser.add_argument('--protocol', type=str, default='https', help='Transfer protocol')
   parser.add_argument('--start', type=int, help='File # to start with')
   parser.add_argument('--stop', type=int, help='File # to finish with')
   parser.add_argument('--numBatches', type=int, help='# of Batches (of Transfers)')
