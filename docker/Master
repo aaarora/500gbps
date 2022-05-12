@@ -1,7 +1,7 @@
 FROM opensciencegrid/software-base:fresh
 
 RUN yum -y install vim && \
-    yum -y install gfal2-plugin-file gfal2-plugin-gridftp && \
+    yum -y install gfal2-plugin-file gfal2-plugin-gridftp gfal2-util gfal2-all && \
     yum -y install globus-gass-copy-progs && \
     yum -y install xrootd-client
 
